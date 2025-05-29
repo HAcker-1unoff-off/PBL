@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Real-time News</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boostrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body class="bg-light">
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">📰 Real-Time News</h1>
+        {% if articles %}
+            <ul>
+                {% for article in articles %}
+                    <li>
+                        <strong>{{ article.title }}</strong><br>
+                        <a href="{{ article.url }}" target="_blank">Read More</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No news available.</p>
+        {% endif %}
+        <div id="news-container" class="row gy-3"></div>
+    </div>
+    <script>
+        function fetchNews() {
+            $.get("/fetch-news", function(data) {
+                let articles = data.articles;
+                let container = $("#news-container");
+                container.empty();
+                if (articles.length === 0) {
+                    container.append('<p>No news available.</p>');
+                } else {
+                    articles.forEach(article => {
+                        let card = `
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <img src="${article.urlToImage || ''}" class="card-img-top" onerror="this.style.display='none'">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${article.title}</h5>
+                                        <p class="card-text">${article.description || ''}</p>
+                                        <a href="${article.url}" class="btn btn-primary btn-sm" target="_blank">Read more</a>
+                                    </div>
+                                </div>
+                            </div>`;
+                        container.append(card);
+                    });
+                }
+            });
+        }
+
+        fetchNews();
+        setInterval(fetchNews, 300000);
+    </script>
+</body>    
