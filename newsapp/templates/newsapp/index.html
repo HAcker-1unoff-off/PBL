@@ -1,46 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Real-time News</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boostrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #ece9e6, #ffffff);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 960px;
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            flex-grow: 1;
+        }
+        .card {
+            border: none;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease-in-out;
+            background-color: #fefefe;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-title {
+            font-weight: bold;
+            color: #333;
+        }
+        .card-img-top {
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            max-height: 200px;
+            object-fit: cover;
+        }
+        .page-title {
+            color: #007bff;
+            padding: 20px 0;
+            border-bottom: 2px solid #007bff;
+            margin-bottom: cover;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+            border-top: 1px solid #dee2e6;
+            font-size: 0.9rem;
+            color: #6c757d;
+            background-color: #f8f9fa;
+        }
+    </style>
 </head>
+
 <body class="bg-light">
     <div class="container mt-4">
         <h1 class="text-center mb-4">📰 Real-Time News</h1>
         {% if articles %}
-            <ul>
-                {% for article in articles %}
-                    <li>
-                        <strong>{{ article.title }}</strong><br>
-                        <a href="{{ article.url }}" target="_blank">Read More</a>
-                    </li>
-                {% endfor %}
-            </ul>
+        <ul>
+            {% for article in articles %}
+            <li>
+                <strong>{{ article.title }}</strong><br>
+                <a href="{{ article.url }}" target="_blank">Read More</a>
+            </li>
+            {% endfor %}
+        </ul>
         {% else %}
-            <p>No news available.</p>
+        <p>No news available.</p>
         {% endif %}
         <div id="news-container" class="row gy-3"></div>
     </div>
     <script>
         function fetchNews() {
-            $.get("/fetch-news", function(data) {
+            $.get("/fetch-news", function (data) {
                 let articles = data.articles;
                 let container = $("#news-container");
                 container.empty();
                 if (articles.length === 0) {
-                    container.append('<p>No news available.</p>');
+                    container.append('<div class="col-12"><p class="text-center text-muted">No news available.</p></div>');
                 } else {
                     articles.forEach(article => {
                         let card = `
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <img src="${article.urlToImage || ''}" class="card-img-top" onerror="this.style.display='none'">
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card h-100">
+                                    <img src="${article.urlToImage || 'https://via.placeholder.com/400x200.png?text=No+Image'}" class="card-img-top" alt="${article.title || 'News image'}" onerror="this.onerror=null;this.src='https://via.placeholder.com/400x200.png?text=Image+Not+Found';">
                                     <div class="card-body">
                                         <h5 class="card-title">${article.title}</h5>
-                                        <p class="card-text">${article.description || ''}</p>
-                                        <a href="${article.url}" class="btn btn-primary btn-sm" target="_blank">Read more</a>
+                                        <p class="card-text"><small class="text-muted">${article.source || 'N/A'}</small></p>
+                                        <a href="${article.url}" class="btn btn-primary btn-sm mt-auto" target="_blank">Read more</a>
                                     </div>
                                 </div>
                             </div>`;
@@ -53,4 +111,8 @@
         fetchNews();
         setInterval(fetchNews, 300000);
     </script>
-</body>    
+    <footer class="footer">
+        <p>&copy; ${new Date().getFullYear()} Real-Time News. All rights reserved.</p>
+    </footer>
+</body>
+</html>

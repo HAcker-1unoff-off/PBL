@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 ]
 
 NEWS_API_KEY = 'dd3f941637104e51b395ebd7b7814b22'
+#NEWS_DATA_API_KEY = 'pub_b0546d8a5110427ea622b11a76805948'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
