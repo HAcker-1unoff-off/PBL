@@ -1,0 +1,88 @@
+{% extends 'newsapp/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Active Polls</h2>
+    <div id="polls-container" class="row">
+        {% for poll in polls %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ poll.question }}</h5>
+                    <form class="poll-form" data-poll-id="{{ poll.id }}">
+                        {% csrf_token %}
+                        {% for choice in poll.choices.all %}
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="choice" value="{{ choice.id }}" id="choice{{ choice.id }}">
+                            <label class="form-check-label" for="choice{{ choice.id }}">
+                                {{ choice.choice_text }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">Vote</button>
+                        <button type="button" class="btn btn-secondary show-results" data-poll-id="{{ poll.id }}">Show Results</button>
+                    </form>
+                    <div class="results-container mt-3" id="results-{{ poll.id }}" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    $('.poll-form').on('submit', function(e) {
+        e.preventDefault();
+        const form = $(this);
+        const pollId = form.data('poll-id');
+        const choice = form.find('input[name="choice"]:checked').val();
+        
+        if (!choice) {
+            alert('Please select an option');
+            return;
+        }
+        
+        $.ajax({
+            url: `/poll/${pollId}/vote/`,
+            type: 'POST',
+            data: {
+                'choice': choice,
+                'csrfmiddlewaretoken': form.find('[name=csrfmiddlewaretoken]').val()
+            },
+            success: function(response) {
+                alert('Vote recorded successfully!');
+                showResults(pollId);
+            },
+            error: function(xhr) {
+                alert('Error recording vote. Please try again.');
+            }
+        });
+    });
+
+    $('.show-results').on('click', function() {
+        const pollId = $(this).data('poll-id');
+        showResults(pollId);
+    });
+
+    function showResults(pollId) {
+        $.get(`/poll/${pollId}/results/`, function(data) {
+            const resultsContainer = $(`#results-${pollId}`);
+            let resultsHtml = '<h6>Results:</h6><ul class="list-group">';
+            
+            data.results.forEach(result => {
+                resultsHtml += `
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        ${result.choice}
+                        <span class="badge bg-primary rounded-pill">${result.votes}</span>
+                    </li>`;
+            });
+            
+            resultsHtml += '</ul>';
+            resultsContainer.html(resultsHtml).show();
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.conf import settings 
 from django.http import JsonResponse
+from .models import Poll, Choice
 import requests
 from django.core.paginator import Paginator
 
@@ -23,6 +24,39 @@ def fetch_news(request):
 
     articles = data.get('articles', [])
     return JsonResponse({'articles': articles})
+
+def poll_list(request):
+    active_polls = Poll.objects.filter(active=True).order_by('-pub_date')
+    return render(request, 'newsapp/polls.html', {'polls': active_polls})
+
+def vote(request, poll_id):
+    if request.method == 'POST':
+        poll = get_object_or_404(Poll, pk=poll_id)
+        try:
+            choice_id = request.POST.get('choice')
+            if not choice_id:
+                return JsonResponse({'error': 'No choice selected'}, status=400)
+
+            selected_choice = poll.choices.get(pk=choice_id)
+            selected_choice.votes += 1
+            selected_choice.save()
+
+            return JsonResponse({ 
+                'success': True,
+                'message': 'Vote recorded successfully',
+            })
+        except Choice.DoesNotExist:
+            return JsonResponse({'error': 'Invalid Choice'}, status=400)
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+def results(request, poll_id):
+    poll = get_object_or_404(Poll, pk=poll_id)
+    results = [{
+        'choice': choice.choice_text,
+        'votes': choice.votes
+    } for choice in poll.choices.all()]
+
+    return JsonResponse({'results': results})
 
 '''def index(request):
     api_key = settings.NEWS_DATA_API_KEY
