@@ -3,29 +3,35 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2 class="text-center mb-4">Active Polls</h2>
-    <div id="polls-container" class="row justify-content-center">
+    <h2 class="text-center mb-5 fw-bold text-primary">🗳️ Active Polls</h2>
+    <div id="polls-container" class="row justify-content-center gy-4">
         {% for poll in polls %}
         <div class="col-md-8 col-lg-6 mb-4">
             <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title text-primary mb-3">{{ poll.question }}</h5>
+                <div class="card-body p-4">
+                    <h5 class="card-title text-dark mb-3 fs-4">{{ poll.question }}</h5>
                     <form class="poll-form" data-poll-id="{{ poll.id }}">
                         {% csrf_token %}
                         {% for choice in poll.choices.all %}
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="choice" value="{{ choice.id }}" id="choice{{ choice.id }}">
-                            <label class="form-check-label" for="choice{{ choice.id }}">
+                        <div class="form-check mb-3">
+                            <input class="form-check-input fs-5" type="radio" name="choice" value="{{ choice.id }}" id="choice{{ choice.id }}">
+                            <label class="form-check-label fs-5 ms-2" for="choice{{ choice.id }}">
                                 {{ choice.choice_text }}
                             </label>
                         </div>
                         {% endfor %}
-                        <button type="submit" class="btn btn-primary">Vote</button>
-                        <button type="button" class="btn btn-secondary show-results" data-poll-id="{{ poll.id }}">Show Results</button>
+                        <div class="d-flex justify-content-start mt-4">
+                            <button type="submit" class="btn btn-primary me-2">Vote</button>
+                            <button type="button" class="btn btn-outline-secondary show-results" data-poll-id="{{ poll.id }}">Show Results</button>
+                        </div>
                     </form>
-                    <div class="results-container mt-3 p-3 border rounded bg-light" id="results-{{ poll.id }}" style="display: none;"></div>
+                    <div class="results-container mt-4 p-3 border rounded bg-light" id="results-{{ poll.id }}" style="display: none;"></div>
                 </div>
             </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-center text-muted fs-5">There is no active polls at the moment. Check back later!</p>
         </div>
         {% endfor %}
     </div>
@@ -52,7 +58,7 @@ $(document).ready(function() {
                 'csrfmiddlewaretoken': form.find('[name=csrfmiddlewaretoken]').val()
             },
             success: function(response) {
-                alert('Vote recorded successfully!');
+                alert('Your vote has been recorded successfully!');
                 showResults(pollId);
             },
             error: function(xhr) {
@@ -69,18 +75,18 @@ $(document).ready(function() {
     function showResults(pollId) {
         $.get(`/poll/${pollId}/results/`, function(data) {
             const resultsContainer = $(`#results-${pollId}`);
-            let resultsHtml = '<h6>Results:</h6><ul class="list-group">';
+            let resultsHtml = '<h6 class="mb-3">Results:</h6><ul class="list-group list-group-flush">';
             
             data.results.forEach(result => {
                 resultsHtml += `
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         ${result.choice}
-                        <span class="badge bg-primary rounded-pill">${result.votes}</span>
+                        <span class="badge bg-primary rounded-pill fs-6">${result.votes}</span>
                     </li>`;
             });
             
             resultsHtml += '</ul>';
-            resultsContainer.html(resultsHtml).show();
+            resultsContainer.html(resultsHtml).slideDown();
         });
     }
 });

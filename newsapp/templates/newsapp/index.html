@@ -11,8 +11,8 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
-<body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
         <div class="container">
             <a class="navbar-brand" href="{% url 'index' %}">📰 Real-Time News</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,7 +21,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'index' %}">Home</a> 
+                        <a class="nav-link active" href="{% url 'index' %}">Home</a> 
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'poll_list' %}">Polls</a>
@@ -47,7 +47,7 @@
         <p>No news available.</p>
         {% endif %}
         {% endcomment %}
-        <div id="news-container" class="row gy-3"></div>
+        <div id="news-container" class="row gy-4"></div>
         {% endblock %}
     </div>
     <script>
@@ -57,17 +57,18 @@
                 let container = $("#news-container");
                 container.empty();
                 if (articles.length === 0) {
-                    container.append('<div class="col-12"><p class="text-center text-muted">No news available.</p></div>');
+                    container.append('<div class="col-12"><p class="text-center text-muted fs-5">No news available.</p></div>');
                 } else {
                     articles.forEach(article => {
                         let card = `
                             <div class="col-md-6 col-lg-4">
                                 <div class="card h-100">
-                                    <img src="${article.urlToImage || 'https://via.placeholder.com/400x200.png?text=No+Image'}" class="card-img-top" alt="${article.title || 'News image'}" onerror="this.onerror=null;this.src='https://via.placeholder.com/400x200.png?text=Image+Not+Found';">
+                                    <img src="${article.urlToImage || 'https://via.placeholder.com/400x220.png?text=No+Image+Available'}" class="card-img-top" alt="${article.title || 'News image'}" onerror="this.onerror=null;this.src='https://via.placeholder.com/400x220.png?text=Image+Not+Found';">
                                     <div class="card-body">
                                         <h5 class="card-title">${article.title}</h5>
-                                        <p class="card-text"><small class="text-muted">${article.source || 'N/A'}</small></p>
-                                        <a href="${article.url}" class="btn btn-primary btn-sm mt-auto" target="_blank">Read more</a>
+                                        <p class="card-text text-muted mb-2"><small>${article.source || 'N/A'}</small></p>
+                                        <p class="card-text mb-auto">${article.description ? article.description.substring(0, 100) + '...' : 'No description available.'}</p>
+                                        <a href="${article.url}" class="btn btn-primary btn-sm mt-3" target="_blank">Read more</a>
                                     </div>
                                 </div>
                             </div>`;
@@ -79,9 +80,9 @@
 
         fetchNews();
         setInterval(fetchNews, 300000);
-        document.getElementById("current-year").textContent = new Date().getFullYear();
+        if(document.getElementById("current-year")) {document.getElementById("current-year").textContent = new Date().getFullYear();}
     </script>
-    <footer class="footer">
+    <footer class="footer mt-auto">
         <p>&copy; <span id="current-year"></span> Real-Time News. All rights reserved.</p>
     </footer>
 </body>
