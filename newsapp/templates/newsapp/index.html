@@ -66,7 +66,7 @@
                                     <img src="${article.urlToImage || 'https://via.placeholder.com/400x220.png?text=No+Image+Available'}" class="card-img-top" alt="${article.title || 'News image'}" onerror="this.onerror=null;this.src='https://via.placeholder.com/400x220.png?text=Image+Not+Found';">
                                     <div class="card-body">
                                         <h5 class="card-title">${article.title}</h5>
-                                        <p class="card-text text-muted mb-2"><small>${article.source || 'N/A'}</small></p>
+                                        <p class="card-text text-muted mb-2"><small>${article.source.name || 'N/A'}</small></p>
                                         <p class="card-text mb-auto">${article.description ? article.description.substring(0, 100) + '...' : 'No description available.'}</p>
                                         <a href="${article.url}" class="btn btn-primary btn-sm mt-3" target="_blank">Read more</a>
                                     </div>
