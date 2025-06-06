@@ -4,12 +4,12 @@
 {% block content %}
 <div class="container mt-4">
     <h2 class="text-center mb-4">Active Polls</h2>
-    <div id="polls-container" class="row">
+    <div id="polls-container" class="row justify-content-center">
         {% for poll in polls %}
-        <div class="col-md-6 mb-4">
-            <div class="card">
+        <div class="col-md-8 col-lg-6 mb-4">
+            <div class="card shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title">{{ poll.question }}</h5>
+                    <h5 class="card-title text-primary mb-3">{{ poll.question }}</h5>
                     <form class="poll-form" data-poll-id="{{ poll.id }}">
                         {% csrf_token %}
                         {% for choice in poll.choices.all %}
@@ -23,7 +23,7 @@
                         <button type="submit" class="btn btn-primary">Vote</button>
                         <button type="button" class="btn btn-secondary show-results" data-poll-id="{{ poll.id }}">Show Results</button>
                     </form>
-                    <div class="results-container mt-3" id="results-{{ poll.id }}" style="display: none;"></div>
+                    <div class="results-container mt-3 p-3 border rounded bg-light" id="results-{{ poll.id }}" style="display: none;"></div>
                 </div>
             </div>
         </div>
