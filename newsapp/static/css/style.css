@@ -120,6 +120,10 @@ body {
 }
 
 .btn-outline-secondary {
+    border-color: #343a40;
+    color: #343a40;
+    padding: 10px 20px;
+    font-weight: 500;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
