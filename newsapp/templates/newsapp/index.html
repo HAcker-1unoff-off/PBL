@@ -76,13 +76,8 @@
                 } else {
                     displayArticles.forEach(article => {
                         let card = `
-<<<<<<< HEAD
                             <div class="col-md-6 col-lg-4" data-aos="fade-up">
                                 <div class="card h-100 shadow-sm border-0">
-=======
-                            <div class="col-md-4 col-lg-4">
-                                <div class="card h-100 shadow-sm">
->>>>>>> c3776d3210617c0f3b7166a443a137c0862d4763
                                     <img src="${article.urlToImage || 'https://via.placeholder.com/400x220.png?text=No+Image+Available'}" class="card-img-top" alt="${article.title || 'News image'}" onerror="this.onerror=null;this.src='https://via.placeholder.com/400x220.png?text=Image+Not+Found';">
                                     <div class="card-body">
                                         <h5 class="card-title">${article.title}</h5>
