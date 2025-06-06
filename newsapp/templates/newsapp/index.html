@@ -12,9 +12,9 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+    <nav class="navbar navbar-expand-lg navbar-custom shadow-sm mb-4">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'index' %}">📰 Real-Time News</a>
+            <a class="navbar-brand fw-bold" href="{% url 'index' %}">📰 Real-Time News</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -54,15 +54,16 @@
         function fetchNews() {
             $.get("/fetch-news", function (data) {
                 let articles = data.articles;
+                let displayArticles = articles.slice(0, 9);
                 let container = $("#news-container");
                 container.empty();
-                if (articles.length === 0) {
+                if (displayArticles.length === 0) {
                     container.append('<div class="col-12"><p class="text-center text-muted fs-5">No news available.</p></div>');
                 } else {
-                    articles.forEach(article => {
+                    displayArticles.forEach(article => {
                         let card = `
-                            <div class="col-md-6 col-lg-4">
-                                <div class="card h-100">
+                            <div class="col-md-4 col-lg-4">
+                                <div class="card h-100 shadow-sm">
                                     <img src="${article.urlToImage || 'https://via.placeholder.com/400x220.png?text=No+Image+Available'}" class="card-img-top" alt="${article.title || 'News image'}" onerror="this.onerror=null;this.src='https://via.placeholder.com/400x220.png?text=Image+Not+Found';">
                                     <div class="card-body">
                                         <h5 class="card-title">${article.title}</h5>

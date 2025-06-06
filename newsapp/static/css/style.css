@@ -51,7 +51,24 @@ body {
     font-weight: 700;
 }
 
+.navbar-custom {
+    background-color: #343a40 !important;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
 
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link {
+    color: #f8f9fa !important;
+    transition: color 0.3s ease;
+}
+.navbar-custom .nav-link:hover {
+    color: #adb5bd !important;
+}
+
+.navbar-custom .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28248, 249, 250, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
 
 .card {
     border: 1px solid #e0e0e0;
@@ -85,11 +102,13 @@ body {
     color: #343a40;
     margin-bottom: 12px;
     font-weight: 600;
+    min-height: 3em;
 }
 
 .card-text {
     font-size: 1rem;
     color: #555;
+    min-height: 4.5em;
 }
 
 .card-footer {
