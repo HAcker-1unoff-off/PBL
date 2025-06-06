@@ -2,12 +2,12 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-5">
     <h2 class="text-center mb-5 fw-bold text-primary">🗳️ Active Polls</h2>
     <div id="polls-container" class="row justify-content-center gy-4">
         {% for poll in polls %}
         <div class="col-md-8 col-lg-6 mb-4">
-            <div class="card shadow-sm">
+            <div class="card shadow-sm border-0">
                 <div class="card-body p-4">
                     <h5 class="card-title text-dark mb-3 fs-4">{{ poll.question }}</h5>
                     <form class="poll-form" data-poll-id="{{ poll.id }}">
