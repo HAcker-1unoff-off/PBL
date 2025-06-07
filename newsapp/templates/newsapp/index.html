@@ -31,6 +31,15 @@
         </div>
     </nav>
 
+    <div class="position-fixed bottom-0 end-0 m-3">
+        <button id="darkModeToggle" class="btn btn-outline-secondary rounded-circle p-2 shadow-sm" aria-label="Toggle dark mode">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-moon-stars" viewBox="0 0 16 16">
+                <path d="M6 .278a.77.77 0 0 1 .08.058 7.2 7.2 0 0 0-.873 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.309a.751.751 0 0 1 .858.511z"/>
+                <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.575 1.269 1.244 1.845.808.713 1.586 1.167 2.165 1.167a.8.8 0 0 1 0 1.601C14.305 7.82 13.527 7.366 12.719 6.653a8.522 8.522 0 0 0-1.244-1.845l-.387-1.162zM13.564 7.248c.961-1.213 1.427-2.549 1.427-3.885 0-.21-.02-.416-.062-.616.21-.073.412-.18.588-.326.196-.162.333-.39.333-.65 0-.416-.28-.759-.638-.759-.242 0-.45.15-.588.326a1.76 1.76 0 0 0-.333.65c-.042.2-.062.406-.062.616 0 1.491.545 2.896 1.427 3.885z"/>
+            </svg>
+        </button>
+    </div>
+
     <section class="bg-primary text-white text-center py-5 mb-5 rounded">
         <div class="container">
             <h1 class="display-4 fw-bold">📰 Stay Updated</h1>
@@ -96,6 +105,23 @@
         fetchNews();
         setInterval(fetchNews, 60000);
         if(document.getElementById("current-year")) {document.getElementById("current-year").textContent = new Date().getFullYear();}
+
+        const toggleBtn = document.getElementById('darkModeToggle');
+
+        function setTheme (theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        });
+
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        setTheme(savedTheme);
+        
     </script>
     <script>
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {

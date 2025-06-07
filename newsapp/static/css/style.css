@@ -1,13 +1,30 @@
+:root {
+    --bg-color: #f9f8fc;
+    --text-color: #343a40;
+    --card-bg: #ffffff;
+    --footer-bg: #212529;
+    --nav-bg: #ffffff;
+}
+
+[data-theme="dark"] {
+    --bg-color: #121212;
+    --text-color: #e9ecef;
+    --card-bg: #1e1e1e;
+    --footer-bg: #1a1a1a;
+    --nav-bg: #1f1f1f;
+}
+
 body {
     font-family: 'Inter', sans-serif;
-    background: #f9fbfc;
-    color: #343a40;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     line-height: 1.6;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .container {
@@ -17,14 +34,14 @@ body {
 }
 
 .navbar {
-    background-color: #ffffff;
+    background-color: var(--nav-bg);
     padding: 1rem 0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     margin-bottom: 30px;
 }
 
 .navbar-brand {
-    color: #2c3e50;
+    color: var(--text-color);
     font-weight: 700;
     font-size: 1.9rem;
     transition: color 0.3s ease;
@@ -35,7 +52,7 @@ body {
 }
 
 .navbar-nav .nav-link {
-    color: #555;
+    color: var(--text-color);
     margin-right: 20px;
     font-weight: 500;
     transition: color 0.3s ease, transform 0.2s ease-out;
@@ -64,7 +81,8 @@ body {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin-bottom: 25px;
-    background-color: #ffffff;
+    background-color: var(--card-bg);
+    color: var(--text-color);
 }
 
 .card:hover {
@@ -86,14 +104,14 @@ body {
 
 .card-title {
     font-size: 1.6rem;
-    color: #343a40;
+    color: var(--text-color);
     margin-bottom: 12px;
     font-weight: 700;
 }
 
 .card-text {
     font-size: 1rem;
-    color: #555;
+    color: var(--text-color);
     min-height: 4.5em;
 }
 
@@ -133,7 +151,7 @@ body {
 }
 
 .footer {
-    background-color: #212529;
+    background-color: var(--footer-bg);
     color: #f8f9fa;
     text-align: center;
     padding: 25px 0;
@@ -143,7 +161,7 @@ body {
 
 .poll-form .form-check-label {
     font-size: 1.05rem;
-    color: #495057;
+    color: var(--text-color);
 }
 
 .poll-form .btn {
