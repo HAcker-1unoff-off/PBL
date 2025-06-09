@@ -40,6 +40,7 @@ def vote(request, poll_id):
             selected_choice = poll.choices.get(pk=choice_id)
             selected_choice.votes += 1
             selected_choice.save()
+            print(f"Choice '{selected_choice.choice_text}' now has '{selected_choice.votes}' votes")
 
             return JsonResponse({ 
                 'success': True,
@@ -55,6 +56,8 @@ def results(request, poll_id):
         'choice': choice.choice_text,
         'votes': choice.votes
     } for choice in poll.choices.all()]
+    
+    print(f"Results sent to frontend for poll {poll_id}: {results}")
 
     return JsonResponse({'results': results})
 

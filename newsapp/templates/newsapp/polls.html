@@ -73,6 +73,9 @@ $(document).ready(function() {
     });
 
     function showResults(pollId) {
+        const resultsContainer = $(`#results-${pollId}`);
+        resultsContainer.html('<p>Loading Results...</p>').slideDown();
+
         $.get(`/poll/${pollId}/results/`, function(data) {
             const resultsContainer = $(`#results-${pollId}`);
             let resultsHtml = '<h6 class="mb-3">Results:</h6><ul class="list-group list-group-flush">';
