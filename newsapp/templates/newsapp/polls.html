@@ -60,6 +60,7 @@ $(document).ready(function() {
             success: function(response) {
                 alert('Your vote has been recorded successfully!');
                 showResults(pollId);
+                form.find('.show-results').prop('disabled', false);
             },
             error: function(xhr) {
                 alert('Error recording vote. Please try again.');
@@ -77,6 +78,11 @@ $(document).ready(function() {
         resultsContainer.html('<p>Loading Results...</p>').slideDown();
 
         $.get(`/poll/${pollId}/results/`, function(data) {
+            console.log("Received data:", data);
+            if (!data || !data.results) {
+                resultsContainer.html('<p class="text-danger">Error loading results.</p>');
+                return;
+            }
             const resultsContainer = $(`#results-${pollId}`);
             let resultsHtml = '<h6 class="mb-3">Results:</h6><ul class="list-group list-group-flush">';
             
